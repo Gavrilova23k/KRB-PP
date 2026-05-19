@@ -39,7 +39,32 @@
 ---
 
 ## 🏗 Архитектура проекта
-project-root/ ├── src/ │ ├── app/ # Next.js App Router │ │ ├── api/ │ │ │ ├── auth/ │ │ │ │ └── route.ts # Кастомная аутентификация (signup, signin, logout) │ │ │ └── trpc/ │ │ │ └── [trpc]/ │ │ │ └── route.ts # tRPC endpoint │ │ ├── auth/ │ │ │ └── page.tsx # Страница входа/регистрации │ │ ├── city/[name]/ │ │ │ └── page.tsx # Страница города с погодой │ │ ├── favorites/ │ │ │ └── page.tsx # Страница избранных городов │ │ ├── feedback/ │ │ │ └── page.tsx # Форма отзыва о городе │ │ ├── profile/ │ │ │ └── page.tsx # Профиль пользователя │ │ ├── layout.tsx # Корневой layout с провайдерами │ │ └── page.tsx # Главная страница (HomePage) │ ├── components/ │ │ ├── providers/ │ │ │ ├── AuthProvider.tsx # Глобальный стейт аутентификации │ │ │ └── TRPCProvider.tsx # tRPC клиент │ │ ├── HomePage.tsx # Главная страница с фильтрами │ │ ├── AuthButtons.tsx # Кнопки входа/выхода в навигации │ │ ├── CityCard.tsx # Карточка города │ │ ├── CityDetails.tsx # Детали города │ │ ├── WeatherWidget.tsx # Виджет погоды │ │ ├── FavoritesPage.tsx # Страница избранного │ │ ├── FeedbackForm.tsx # Форма отзыва │ │ ├── ProtectedRoute.tsx # Обёртка для защищённых маршрутов │ │ ├── SmartNavigation.tsx # Умная навигация с кнопками назад/вперёд │ │ └── ... │ ├── server/ │ │ ├── db/ │ │ │ ├── index.ts # Подключение Drizzle к SQLite │ │ │ └── schema.ts # Схема таблиц (user, session, city, etc.) │ │ └── trpc/ │ │ ├── trpc.ts # Настройка tRPC (процедуры, контекст) │ │ ├── context.ts # Контекст для роутеров │ │ └── routers/ │ │ ├── city.ts # Роутер городов │ │ ├── weather.ts # Роутер погоды (Open-Meteo API) │ │ ├── favorites.ts # Роутер избранного │ │ └── feedback.ts # Роутер отзывов │ ├── lib/ │ │ ├── auth.ts # Логика аутентификации (лучше убрать, если не используется) │ │ ├── password.ts # Хеширование и проверка паролей (bcryptjs) │ │ └── utils.ts # Вспомогательные функции │ ├── hooks/ │ │ ├── useHistory.ts # Хук истории навигации │ │ └── useNavigationHistory.ts │ ├── styles/ │ │ ├── globals.css # Глобальные стили (600+ строк, требуется рефакторинг) │ │ ├── App1.css # Стили для компонентов │ │ ├── App2.css │ │ ├── App3.css │ │ ├── calendar.css # Стили календаря │ │ ├── cities.css # Стили городов │ │ ├── profile.css # Стили профиля │ │ └── quiz.css # Стили викторины │ └── tests/ │ ├── setup.ts # Настройка тестового окружения │ ├── utils.test.ts # Unit-тесты для утилит │ ├── auth.test.ts # Тесты аутентификации │ ├── trpc.test.ts # Интеграционные тесты tRPC роутеров │ └── favorites.test.ts # Тесты для favorites router ├── scripts/ │ ├── init-db.js # Инициализация БД (создаёт таблицы и начальные данные) │ ├── restore-db.js # Восстановление БД из бэкапа │ └── reset-db.js # Сброс БД до начального состояния ├── drizzle/ │ ├── 0000_neat_korg.sql # Сгенерированные миграции Drizzle Kit │ └── meta/ ├── public/ # Статические файлы (изображения городов) ├── .env.example # Пример переменных окружения ├── .env.local # Локальные переменные (не коммить!) ├── next.config.js # Конфигурация Next.js ├── tsconfig.json # Конфигурация TypeScript ├── vitest.config.ts # Конфигурация Vitest ├── drizzle.config.ts # Конфигурация Drizzle Kit ├── package.json # Зависимости и скрипты └── README.md # Эта документация
+src/
+├── app/                    # Страницы Next.js (App Router)
+│   ├── api/                # API-эндпоинты (auth, trpc)
+│   ├── auth/page.tsx       # Вход и регистрация
+│   ├── city/[name]/page.tsx
+│   ├── citydetails/[name]/page.tsx
+│   ├── calendar/[cityName]/page.tsx
+│   ├── favorites/page.tsx
+│   ├── feedback/page.tsx
+│   ├── quiz/page.tsx
+│   ├── profile/page.tsx
+│   └── page.tsx            # Главная страница
+├── components/             # React-компоненты
+│   ├── providers/          # TRPCProvider, AuthProvider, ProtectedRoute
+│   ├── SmartNavigation.tsx # Боковое меню
+│   ├── AuthButtons.tsx     # Кнопки входа/выхода
+│   ├── CityCard.tsx        # Карточка города (с tRPC)
+│   └── WeatherWidget.tsx   # Виджет погоды
+├── server/                 # Серверная логика
+│   ├── db/                 # Drizzle ORM (schema, index)
+│   └── trpc/               # tRPC (context, routers)
+├── lib/                    # Утилиты (trpc, password)
+├── hooks/                  # Кастомные хуки
+├── styles/                 # CSS-стили
+├── context/                # React Context (FavoritesContext — старый)
+└── tests/                  # Тесты Vitest
 
 
 ### Ключевые архитектурные решения
